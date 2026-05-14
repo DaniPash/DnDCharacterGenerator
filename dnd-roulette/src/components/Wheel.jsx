@@ -1,16 +1,16 @@
 const SEGMENT_COLORS = [
-  { fill: '#2D1B69', stroke: '#7C3AED', text: '#DDD6FE' },
-  { fill: '#1A3A1F', stroke: '#16A34A', text: '#BBF7D0' },
-  { fill: '#3B1515', stroke: '#DC2626', text: '#FECACA' },
-  { fill: '#1A2E4A', stroke: '#2563EB', text: '#BFDBFE' },
-  { fill: '#3B2A0A', stroke: '#D97706', text: '#FDE68A' },
-  { fill: '#2D1033', stroke: '#9333EA', text: '#E9D5FF' },
-  { fill: '#1A3A35', stroke: '#0D9488', text: '#99F6E4' },
-  { fill: '#3B1A1A', stroke: '#E11D48', text: '#FECDD3' },
-  { fill: '#1E2A10', stroke: '#65A30D', text: '#D9F99D' },
-  { fill: '#1A1A3B', stroke: '#4F46E5', text: '#C7D2FE' },
-  { fill: '#3B2A10', stroke: '#B45309', text: '#FDE68A' },
-  { fill: '#2A1033', stroke: '#C026D3', text: '#F0ABFC' },
+  { fill: '#eff6ff', stroke: '#2563eb', text: '#1e40af' },
+  { fill: '#f0fdf4', stroke: '#16a34a', text: '#15803d' },
+  { fill: '#fef2f2', stroke: '#dc2626', text: '#b91c1c' },
+  { fill: '#fffbeb', stroke: '#f59e0b', text: '#d97706' },
+  { fill: '#f5f3ff', stroke: '#a855f7', text: '#7e22ce' },
+  { fill: '#ecfdf5', stroke: '#0d9488', text: '#0f766e' },
+  { fill: '#fef3c7', stroke: '#ca8a04', text: '#92400e' },
+  { fill: '#f3e8ff', stroke: '#9333ea', text: '#6b21a8' },
+  { fill: '#dbeafe', stroke: '#3b82f6', text: '#1e3a8a' },
+  { fill: '#fce7f3', stroke: '#ec4899', text: '#831843' },
+  { fill: '#e0f2fe', stroke: '#0284c7', text: '#0c2d6b' },
+  { fill: '#f9fafb', stroke: '#6b7280', text: '#374151' },
 ]
 
 export default function Wheel({ options, rotation, spinning, onSpin, disabled, resultIdx }) {
@@ -36,7 +36,7 @@ export default function Wheel({ options, rotation, spinning, onSpin, disabled, r
     const tx = (cx + tr * Math.cos(midRad)).toFixed(2)
     const ty = (cy + tr * Math.sin(midRad)).toFixed(2)
     const col = SEGMENT_COLORS[i % SEGMENT_COLORS.length]
-    const fontSize = N <= 8 ? 11 : N <= 10 ? 10 : 9
+    const fontSize = N <= 8 ? 12 : N <= 10 ? 11 : 10
     const label = name.length > 12 ? name.slice(0, 11) + '…' : name
     return { path, tx, ty, midDeg, col, label, fontSize }
   })
@@ -44,13 +44,13 @@ export default function Wheel({ options, rotation, spinning, onSpin, disabled, r
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
       {/* Pointer arrow */}
-      <div style={{ position: 'relative', zIndex: 10, marginBottom: -12 }}>
+      <div style={{ position: 'relative', zIndex: 10, marginBottom: -14 }}>
         <div style={{
           width: 0, height: 0,
-          borderLeft: '14px solid transparent',
-          borderRight: '14px solid transparent',
-          borderTop: '28px solid #C9A84C',
-          filter: 'drop-shadow(0 2px 8px rgba(201,168,76,0.6))',
+          borderLeft: '12px solid transparent',
+          borderRight: '12px solid transparent',
+          borderTop: '24px solid #3b82f6',
+          filter: 'drop-shadow(0 2px 6px rgba(37,99,235,0.4))',
           position: 'relative', zIndex: 10
         }} />
       </div>
@@ -58,9 +58,9 @@ export default function Wheel({ options, rotation, spinning, onSpin, disabled, r
       {/* Wheel SVG */}
       <div style={{ position: 'relative' }}>
         <div style={{
-          position: 'absolute', inset: -4,
+          position: 'absolute', inset: -8,
           borderRadius: '50%',
-          boxShadow: `0 0 40px rgba(201,168,76,0.15), 0 0 80px rgba(124,58,237,0.1)`,
+          boxShadow: '0 8px 32px rgba(37,99,235,0.15)',
           pointerEvents: 'none'
         }} />
         <svg
@@ -73,22 +73,22 @@ export default function Wheel({ options, rotation, spinning, onSpin, disabled, r
           }}
         >
           {/* Outer decorative ring */}
-          <circle cx={cx} cy={cy} r={r + 8} fill="none" stroke="#C9A84C" strokeWidth="1" opacity="0.4" />
-          <circle cx={cx} cy={cy} r={r + 4} fill="none" stroke="#C9A84C" strokeWidth="0.5" opacity="0.6" />
+          <circle cx={cx} cy={cy} r={r + 8} fill="none" stroke="#2563eb" strokeWidth="1.5" opacity="0.6" />
+          <circle cx={cx} cy={cy} r={r + 4} fill="none" stroke="#93c5fd" strokeWidth="0.5" opacity="0.4" />
 
           {/* Segments */}
           {segments.map((s, i) => (
             <g key={i}>
-              <path d={s.path} fill={s.col.fill} stroke={s.col.stroke} strokeWidth="1.5" />
+              <path d={s.path} fill={s.col.fill} stroke={s.col.stroke} strokeWidth="2" />
               <g transform={`translate(${s.tx},${s.ty}) rotate(${s.midDeg + 90})`}>
                 <text
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontSize={s.fontSize}
-                  fontWeight="600"
-                  fontFamily="'Raleway', sans-serif"
+                  fontWeight="700"
+                  fontFamily="'Space Mono', monospace"
                   fill={s.col.text}
-                  style={{ userSelect: 'none', letterSpacing: '0.02em' }}
+                  style={{ userSelect: 'none', letterSpacing: '0.01em' }}
                 >
                   {s.label}
                 </text>
@@ -97,9 +97,9 @@ export default function Wheel({ options, rotation, spinning, onSpin, disabled, r
           ))}
 
           {/* Center hub */}
-          <circle cx={cx} cy={cy} r={26} fill="#0d0d1a" stroke="#C9A84C" strokeWidth="1.5" />
-          <circle cx={cx} cy={cy} r={20} fill="#0d0d1a" stroke="#C9A84C" strokeWidth="0.5" opacity="0.5" />
-          <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle" fontSize="18" style={{ userSelect: 'none' }}>⚔️</text>
+          <circle cx={cx} cy={cy} r={28} fill="#ffffff" stroke="#2563eb" strokeWidth="2" />
+          <circle cx={cx} cy={cy} r={20} fill="#eff6ff" stroke="#93c5fd" strokeWidth="1" opacity="0.6" />
+          <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle" fontSize="20" style={{ userSelect: 'none' }}>⚔️</text>
         </svg>
       </div>
 
@@ -108,23 +108,25 @@ export default function Wheel({ options, rotation, spinning, onSpin, disabled, r
         onClick={onSpin}
         disabled={disabled}
         style={{
-          marginTop: 28,
-          padding: '14px 44px',
-          borderRadius: 4,
-          fontFamily: "'Cinzel', serif",
+          marginTop: 36,
+          padding: '14px 40px',
+          borderRadius: 8,
+          fontFamily: "'Inter', sans-serif",
           fontWeight: 600,
           fontSize: 15,
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
+          letterSpacing: '0.02em',
           cursor: disabled ? 'not-allowed' : 'pointer',
-          border: disabled ? '1px solid #333' : '1px solid #C9A84C',
-          background: disabled ? '#111' : 'linear-gradient(180deg, #1a1200 0%, #0d0900 100%)',
-          color: disabled ? '#555' : '#C9A84C',
+          border: 'none',
+          background: disabled ? '#d1d5db' : '#2563eb',
+          color: disabled ? '#9ca3af' : '#fff',
           transition: 'all 0.2s',
-          boxShadow: disabled ? 'none' : '0 0 20px rgba(201,168,76,0.2), inset 0 1px 0 rgba(201,168,76,0.1)',
+          boxShadow: disabled ? 'none' : '0 4px 12px rgba(37,99,235,0.25)',
+          opacity: disabled ? 0.6 : 1,
         }}
+        onMouseOver={e => !disabled && (e.target.style.background = '#1d4ed8')}
+        onMouseOut={e => !disabled && (e.target.style.background = '#2563eb')}
       >
-        {spinning ? '✦ Вращается...' : '🎲 Вращать колесо'}
+        {spinning ? '⟳ Spinning...' : '🎲 Spin'}
       </button>
     </div>
   )

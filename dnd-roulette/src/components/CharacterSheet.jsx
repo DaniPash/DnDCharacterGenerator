@@ -3,24 +3,24 @@ function StatBox({ stat, value }) {
   const modStr = (mod >= 0 ? '+' : '') + mod
   return (
     <div style={{
-      border: '1px solid #2a2418',
-      borderRadius: 6,
-      padding: '10px 4px',
+      border: '1px solid #e5e7eb',
+      borderRadius: 8,
+      padding: '12px 8px',
       textAlign: 'center',
-      background: '#0d0d1a',
+      background: '#f9fafb',
     }}>
-      <div style={{ fontSize: 9, color: '#7a6a50', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4, fontFamily: "'Raleway', sans-serif" }}>{stat}</div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: '#e8e0d4', lineHeight: 1, fontFamily: "'Cinzel', serif" }}>{value}</div>
-      <div style={{ fontSize: 13, color: '#C9A84C', fontWeight: 600, marginTop: 3, fontFamily: "'Cinzel', serif" }}>{modStr}</div>
+      <div style={{ fontSize: 10, color: '#6b7280', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6, fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>{stat}</div>
+      <div style={{ fontSize: 24, fontWeight: 700, color: '#1a1a1a', lineHeight: 1, fontFamily: "'Space Mono', monospace" }}>{value}</div>
+      <div style={{ fontSize: 13, color: '#2563eb', fontWeight: 600, marginTop: 4, fontFamily: "'Inter', sans-serif" }}>{modStr}</div>
     </div>
   )
 }
 
 const ATTR_COLORS = [
-  { bg: '#2D1B69', border: '#7C3AED', label: '#A78BFA', val: '#DDD6FE' },
-  { bg: '#1A3A1F', border: '#16A34A', label: '#6EE7B7', val: '#BBF7D0' },
-  { bg: '#3B1515', border: '#B91C1C', label: '#FCA5A5', val: '#FECACA' },
-  { bg: '#1A2E4A', border: '#1D4ED8', label: '#93C5FD', val: '#BFDBFE' },
+  { bg: '#eff6ff', border: '#2563eb', label: '#1e3a8a', val: '#1e40af' },
+  { bg: '#f0fdf4', border: '#16a34a', label: '#15803d', val: '#15803d' },
+  { bg: '#fef2f2', border: '#dc2626', label: '#b91c1c', val: '#b91c1c' },
+  { bg: '#fffbeb', border: '#f59e0b', label: '#b45309', val: '#b45309' },
 ]
 
 export default function CharacterSheet({ character, aiData, onGenerate, aiLoading, onCopy, copied, onRestart }) {
@@ -33,49 +33,52 @@ export default function CharacterSheet({ character, aiData, onGenerate, aiLoadin
   ]
 
   return (
-    <div style={{ minHeight: '100vh', padding: '2rem 1rem', background: '#080810' }}>
+    <div style={{ minHeight: '100vh', padding: '2rem 1rem', background: 'linear-gradient(135deg, #f5f5f5 0%, #e8f0f8 100%)' }}>
       <div style={{ maxWidth: 480, margin: '0 auto' }}>
 
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem', paddingTop: '1rem' }}>
           <div>
-            <div style={{ fontSize: 11, color: '#7a6a50', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Raleway', sans-serif", marginBottom: 6 }}>Лист персонажа</div>
-            <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 28, fontWeight: 900, color: '#C9A84C', margin: 0, lineHeight: 1, textShadow: '0 0 30px rgba(201,168,76,0.3)' }}>
+            <div style={{ fontSize: 12, color: '#5a6b7f', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", marginBottom: 8, fontWeight: 500 }}>Character Sheet</div>
+            <h1 style={{ fontFamily: "'Space Mono', monospace", fontSize: 32, fontWeight: 700, color: '#1a1a1a', margin: 0, lineHeight: 1 }}>
               {aiData ? aiData.name : '— — —'}
             </h1>
           </div>
           <button
             onClick={onRestart}
             style={{
-              padding: '8px 16px', borderRadius: 4, cursor: 'pointer',
-              fontFamily: "'Raleway', sans-serif", fontSize: 12, letterSpacing: '0.05em',
-              background: 'transparent', border: '1px solid #2a2418', color: '#7a6a50',
+              padding: '8px 12px', borderRadius: 6, cursor: 'pointer',
+              fontFamily: "'Inter', sans-serif", fontSize: 12, letterSpacing: '0.02em',
+              background: 'transparent', border: '1px solid #d1d5db', color: '#6b7280',
+              transition: 'all 0.2s'
             }}
-          >↺ Заново</button>
+            onMouseOver={e => e.target.style.background = '#f3f4f6'}
+            onMouseOut={e => e.target.style.background = 'transparent'}
+          >↺ Again</button>
         </div>
 
-        {/* Gold divider */}
-        <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, #C9A84C, transparent)', marginBottom: '1.5rem', opacity: 0.4 }} />
+        {/* Divider */}
+        <div style={{ height: 1, background: '#e5e7eb', marginBottom: '1.5rem' }} />
 
         {/* Attributes grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 20 }}>
           {attrs.map(([key, label], i) => {
             const c = ATTR_COLORS[i]
             return (
-              <div key={key} style={{ background: c.bg, border: `1px solid ${c.border}`, borderRadius: 8, padding: '10px 14px', opacity: 0.9 }}>
-                <div style={{ fontSize: 9, color: c.label, letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: "'Raleway', sans-serif", marginBottom: 4, opacity: 0.7 }}>{label}</div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: c.val, fontFamily: "'Raleway', sans-serif", lineHeight: 1.3 }}>{character[key]}</div>
+              <div key={key} style={{ background: c.bg, border: `1px solid ${c.border}`, borderRadius: 10, padding: '12px 16px' }}>
+                <div style={{ fontSize: 10, color: c.label, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", marginBottom: 6, fontWeight: 600 }}>{label}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: c.val, fontFamily: "'Inter', sans-serif", lineHeight: 1.3 }}>{character[key]}</div>
               </div>
             )
           })}
         </div>
 
         {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 6, marginBottom: '1.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, marginBottom: '2rem' }}>
           {stats.map(s => <StatBox key={s} stat={s} value={character.stats[s]} />)}
         </div>
 
-        <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, #C9A84C, transparent)', marginBottom: '1.5rem', opacity: 0.2 }} />
+        <div style={{ height: 1, background: '#e5e7eb', marginBottom: '2rem' }} />
 
         {/* AI section */}
         {!aiData ? (
@@ -83,58 +86,61 @@ export default function CharacterSheet({ character, aiData, onGenerate, aiLoadin
             onClick={onGenerate}
             disabled={aiLoading}
             style={{
-              width: '100%', padding: '16px', borderRadius: 4,
-              fontFamily: "'Cinzel', serif", fontWeight: 600, fontSize: 14, letterSpacing: '0.08em',
+              width: '100%', padding: '16px', borderRadius: 8,
+              fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 15, letterSpacing: '0.02em',
               cursor: aiLoading ? 'wait' : 'pointer',
-              border: aiLoading ? '1px solid #333' : '1px solid #C9A84C',
-              background: aiLoading ? '#111' : 'transparent',
-              color: aiLoading ? '#555' : '#C9A84C',
-              textTransform: 'uppercase',
-              boxShadow: aiLoading ? 'none' : '0 0 20px rgba(201,168,76,0.1)',
-              transition: 'all 0.3s'
+              border: 'none',
+              background: aiLoading ? '#d1d5db' : '#2563eb',
+              color: aiLoading ? '#9ca3af' : '#fff',
+              transition: 'all 0.2s',
+              boxShadow: aiLoading ? 'none' : '0 4px 12px rgba(37,99,235,0.25)',
+              opacity: aiLoading ? 0.6 : 1,
             }}
+            onMouseOver={e => !aiLoading && (e.target.style.background = '#1d4ed8')}
+            onMouseOut={e => !aiLoading && (e.target.style.background = '#2563eb')}
           >
-            {aiLoading ? '✦ Генерируем предысторию...' : '✦ Сгенерировать предысторию и промпт'}
+            {aiLoading ? '⟳ Generating story...' : '✨ Generate Story & Image Prompt'}
           </button>
         ) : (
           <div>
-            <div style={{ marginBottom: '1.25rem' }}>
-              <div style={{ fontSize: 10, color: '#7a6a50', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Raleway', sans-serif", marginBottom: 8 }}>Предыстория</div>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{ fontSize: 11, color: '#5a6b7f', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", marginBottom: 10, fontWeight: 600 }}>Backstory</div>
               <p style={{
-                fontSize: 14, lineHeight: 1.75, color: '#c8bfa8',
-                background: '#0d0d18', border: '1px solid #1e1a12',
-                borderRadius: 6, padding: '14px 16px', fontFamily: "'Raleway', sans-serif",
-                fontStyle: 'italic', margin: 0
+                fontSize: 14, lineHeight: 1.7, color: '#374151',
+                background: '#f9fafb', border: '1px solid #e5e7eb',
+                borderRadius: 8, padding: '16px', fontFamily: "'Inter', sans-serif",
+                margin: 0
               }}>
                 {aiData.backstory}
               </p>
             </div>
 
             <div>
-              <div style={{ fontSize: 10, color: '#7a6a50', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Raleway', sans-serif", marginBottom: 8 }}>
-                Промпт для изображения
-                <span style={{ fontSize: 9, marginLeft: 8, color: '#4a4030', textTransform: 'none', letterSpacing: 0 }}>Midjourney / DALL-E / Stable Diffusion</span>
+              <div style={{ fontSize: 11, color: '#5a6b7f', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", marginBottom: 10, fontWeight: 600 }}>
+                Image Prompt
               </div>
-              <div style={{ background: '#0a0a10', border: '1px solid #1e1a12', borderRadius: 6, padding: '12px 14px', marginBottom: 8 }}>
-                <p style={{ fontSize: 12, fontFamily: 'monospace', lineHeight: 1.65, color: '#9b9b7a', margin: 0 }}>{aiData.imagePrompt}</p>
+              <div style={{ background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: 8, padding: '14px', marginBottom: 12 }}>
+                <p style={{ fontSize: 13, fontFamily: 'monospace', lineHeight: 1.6, color: '#4b5563', margin: 0 }}>{aiData.imagePrompt}</p>
               </div>
               <button
                 onClick={onCopy}
                 style={{
-                  width: '100%', padding: '10px',
-                  fontFamily: "'Raleway', sans-serif", fontSize: 12, letterSpacing: '0.05em',
-                  background: 'transparent', border: '1px solid #2a2418',
-                  borderRadius: 4, color: copied ? '#C9A84C' : '#7a6a50',
-                  cursor: 'pointer', transition: 'all 0.2s'
+                  width: '100%', padding: '12px',
+                  fontFamily: "'Inter', sans-serif", fontSize: 13, letterSpacing: '0.02em',
+                  background: 'transparent', border: '1px solid #e5e7eb',
+                  borderRadius: 8, color: copied ? '#2563eb' : '#6b7280',
+                  cursor: 'pointer', transition: 'all 0.2s', fontWeight: 500
                 }}
+                onMouseOver={e => e.target.style.background = '#f3f4f6'}
+                onMouseOut={e => e.target.style.background = 'transparent'}
               >
-                {copied ? '✓ Скопировано' : '📋 Скопировать промпт'}
+                {copied ? '✓ Copied' : '📋 Copy Prompt'}
               </button>
             </div>
           </div>
         )}
 
-        <div style={{ height: 40 }} />
+        <div style={{ height: 48 }} />
       </div>
     </div>
   )

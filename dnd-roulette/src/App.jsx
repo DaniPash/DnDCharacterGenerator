@@ -52,28 +52,16 @@ function rollStats() {
   }
 }
 
-// ─── Starfield Background ────────────────────────────────────────────────────
-function Stars() {
-  const stars = Array.from({ length: 60 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 1.5 + 0.5,
-    opacity: Math.random() * 0.4 + 0.1,
-  }))
+// ─── Gradient Background ────────────────────────────────────────────────────
+function GradientBg() {
   return (
-    <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
-      {stars.map(s => (
-        <div key={s.id} style={{
-          position: 'absolute',
-          left: `${s.x}%`, top: `${s.y}%`,
-          width: s.size, height: s.size,
-          borderRadius: '50%',
-          background: '#fff',
-          opacity: s.opacity,
-        }} />
-      ))}
-    </div>
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      background: 'linear-gradient(135deg, #f5f5f5 0%, #e8f0f8 100%)',
+      pointerEvents: 'none',
+      zIndex: 0,
+    }} />
   )
 }
 
@@ -179,7 +167,7 @@ export default function App() {
   if (phase === 'sheet') {
     return (
       <>
-        <Stars />
+        <GradientBg />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <CharacterSheet
             character={character}
@@ -198,40 +186,39 @@ export default function App() {
   // ── Roll Phase ───────────────────────────────────────────────────────────
   return (
     <>
-      <Stars />
+      <GradientBg />
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '2rem 1rem' }}>
 
         {/* Title */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ fontSize: 11, color: '#7a6a50', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: "'Raleway', sans-serif", marginBottom: 8 }}>
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem', paddingTop: '1rem' }}>
+          <div style={{ fontSize: 12, color: '#5a6b7f', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", marginBottom: 8, fontWeight: 500 }}>
             Dungeons &amp; Dragons 5e
           </div>
-          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: 24, fontWeight: 900, color: '#C9A84C', margin: 0, letterSpacing: '0.05em', textShadow: '0 0 30px rgba(201,168,76,0.3)' }}>
+          <h1 style={{ fontFamily: "'Space Mono', monospace", fontSize: 32, fontWeight: 700, color: '#1a1a1a', margin: 0, letterSpacing: '0.02em' }}>
             Character Roulette
           </h1>
         </div>
 
         {/* Progress bar */}
-        <div style={{ display: 'flex', gap: 6, width: '100%', maxWidth: 380, marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: 6, width: '100%', maxWidth: 380, marginBottom: '2rem' }}>
           {STEPS.map((s, i) => (
             <div key={i} style={{
-              flex: 1, height: 2, borderRadius: 1,
-              background: i < step ? '#C9A84C' : i === step ? 'rgba(201,168,76,0.5)' : 'rgba(255,255,255,0.07)',
-              transition: 'background 0.4s',
-              boxShadow: i <= step ? '0 0 8px rgba(201,168,76,0.3)' : 'none'
+              flex: 1, height: 3, borderRadius: 2,
+              background: i < step ? '#2563eb' : i === step ? '#93c5fd' : '#d1d5db',
+              transition: 'background 0.3s ease',
             }} />
           ))}
         </div>
 
         {/* Step header */}
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          <div style={{ fontSize: 11, color: '#7a6a50', letterSpacing: '0.1em', fontFamily: "'Raleway', sans-serif", marginBottom: 4 }}>
-            Шаг {step + 1} из {STEPS.length}
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{ fontSize: 12, color: '#5a6b7f', letterSpacing: '0.1em', fontFamily: "'Inter', sans-serif", marginBottom: 6, fontWeight: 500 }}>
+            Step {step + 1} of {STEPS.length}
           </div>
-          <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: 20, fontWeight: 700, color: '#e8e0d4', margin: '0 0 4px', letterSpacing: '0.05em' }}>
+          <h2 style={{ fontFamily: "'Space Mono', monospace", fontSize: 24, fontWeight: 700, color: '#1a1a1a', margin: '0 0 8px', letterSpacing: '0.01em' }}>
             {currentStep.icon} {currentStep.label}
           </h2>
-          <p style={{ fontSize: 13, color: '#7a6a50', margin: 0, fontFamily: "'Raleway', sans-serif", fontStyle: 'italic' }}>
+          <p style={{ fontSize: 14, color: '#6b7280', margin: 0, fontFamily: "'Inter', sans-serif" }}>
             {currentStep.subtitle}
           </p>
         </div>
@@ -249,41 +236,44 @@ export default function App() {
         {/* Result panel */}
         {resultIdx !== null && (
           <div style={{
-            marginTop: 24, width: '100%', maxWidth: 360,
-            border: '1px solid #C9A84C',
-            borderRadius: 6,
-            padding: '18px 20px',
-            background: 'rgba(201,168,76,0.05)',
+            marginTop: 32, width: '100%', maxWidth: 360,
+            border: '2px solid #3b82f6',
+            borderRadius: 12,
+            padding: '24px',
+            background: '#eff6ff',
             textAlign: 'center',
-            boxShadow: '0 0 30px rgba(201,168,76,0.1)',
+            animation: 'slideUp 0.3s ease',
           }}>
-            <div style={{ fontSize: 10, color: '#7a6a50', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: "'Raleway', sans-serif", marginBottom: 8 }}>Судьба решила</div>
-            <div style={{ fontFamily: "'Cinzel', serif", fontSize: 22, fontWeight: 700, color: '#C9A84C', marginBottom: 16, textShadow: '0 0 20px rgba(201,168,76,0.4)' }}>
+            <div style={{ fontSize: 11, color: '#5a6b7f', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", marginBottom: 12, fontWeight: 600 }}>Fate decides</div>
+            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 26, fontWeight: 700, color: '#1e40af', marginBottom: 20 }}>
               {currentStep.options[resultIdx]}
             </div>
             <button
               onClick={handleNext}
               style={{
-                padding: '11px 32px', borderRadius: 4,
-                fontFamily: "'Cinzel', serif", fontWeight: 600, fontSize: 13, letterSpacing: '0.08em',
-                textTransform: 'uppercase', cursor: 'pointer',
-                background: '#C9A84C', color: '#080810', border: 'none',
-                boxShadow: '0 4px 20px rgba(201,168,76,0.25)',
+                padding: '12px 28px', borderRadius: 8,
+                fontFamily: "'Inter', sans-serif", fontWeight: 600, fontSize: 14, letterSpacing: '0.02em',
+                cursor: 'pointer',
+                background: '#2563eb', color: '#fff', border: 'none',
+                transition: 'all 0.2s',
               }}
+              onMouseOver={e => e.target.style.background = '#1d4ed8'}
+              onMouseOut={e => e.target.style.background = '#2563eb'}
             >
-              {step < STEPS.length - 1 ? 'Дальше →' : 'Лист персонажа →'}
+              {step < STEPS.length - 1 ? 'Next →' : 'View Character →'}
             </button>
           </div>
         )}
 
         {/* Already chosen */}
         {Object.keys(character).length > 0 && (
-          <div style={{ marginTop: 24, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', maxWidth: 380 }}>
+          <div style={{ marginTop: 32, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', maxWidth: 380 }}>
             {Object.entries(character).map(([k, v]) => (
               <span key={k} style={{
-                fontSize: 11, padding: '4px 10px', borderRadius: 20,
-                border: '1px solid #2a2418', color: '#7a6a50',
-                fontFamily: "'Raleway', sans-serif", letterSpacing: '0.03em'
+                fontSize: 12, padding: '6px 12px', borderRadius: 6,
+                border: '1px solid #e5e7eb', color: '#4b5563',
+                fontFamily: "'Inter', sans-serif", letterSpacing: '0.01em',
+                background: '#f3f4f6'
               }}>{v}</span>
             ))}
           </div>
